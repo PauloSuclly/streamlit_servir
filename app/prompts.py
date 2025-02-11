@@ -211,12 +211,12 @@ Explica tus pensamientos dentro de <Thinking></Thinking> y dame tu respuesta fin
 
     4.Datos de recepción:
     - ¿Está la fecha de recepción? La fecha puede estar junto a la firma del receptor. Si es un correo es la fecha en la que se envió el correo.
-    - ¿Quién recibió el documento?
+    - ¿Quién recibió el documento? Si solo hay una firma junto a la fecha de recepción, el administrado es el receptor.
     - Si no es el administrado: ¿Se especifica parentesco o relación?
     - Observación del hallazgo
 
     5.Datos del notificador:
-    - ¿Está el nombre completo del personal notificador?
+    - ¿Está el nombre completo del personal notificador o de la institución notificadora?
     - ¿Incluye identificación de la entidad?
     - Observación del hallazgo
 

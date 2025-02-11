@@ -124,133 +124,15 @@ st.subheader("6. Documentos Emitidos por la Entidad")
 doc6 = st.file_uploader("Subir Documentos Emitidos", type=['pdf'], key="doc6")
 if st.button("Validar Documentos Emitidos"):
     if doc6 is not None:
-        with st.spinner('Procesando documento...'):
-            progress_bar = st.progress(0)
-            for i in range(100):
-                time.sleep(0.01)
-                progress_bar.progress(i + 1)
-            st.session_state.resultados['doc6'] = contar_paginas(doc6)
+        st.warning("Función no implementada...")
     else:
-        st.warning("Por favor, suba un documento primero")
-if st.session_state.resultados['doc6']:
-    st.write(f"Número de páginas: {st.session_state.resultados['doc6']}")
+        st.warning("Función no implementada...")
 
 # Botón para analizar documentos
 st.markdown("---")
 if st.button("Analizar Documentos"):
     if doc2 is not None and doc6 is not None:
         with st.spinner('Analizando documentos...'):
-            progress_bar = st.progress(0)
-            for i in range(100):
-                time.sleep(0.01)
-                progress_bar.progress(i + 1)
-            paginas_doc2 = contar_paginas(doc2)
-            paginas_doc6 = contar_paginas(doc6)
-            st.write("Resultado del análisis:")
-            st.write(f"Recurso de Apelación: {paginas_doc2} páginas")
-            st.write(f"Documentos Emitidos por la Entidad: {paginas_doc6} páginas")
+           st.warning("Función no implementada...")
     else:
-        st.warning("Por favor, asegúrese de haber subido el Recurso de Apelación y los Documentos Emitidos por la Entidad")
-
-
-
-# Opción con 2 columnas
-"""# Inicializar variables en session_state si no existen
-if 'resultados' not in st.session_state:
-    st.session_state.resultados = {}
-
-def contar_paginas(pdf_file, key):
-    if pdf_file is not None:
-        try:
-            # Crear barra de progreso
-            progress_bar = st.progress(0)
-            status_text = st.empty()
-            
-            # Simular proceso de carga
-            for i in range(100):
-                time.sleep(0.01)
-                progress_bar.progress(i + 1)
-                status_text.text(f"Procesando... {i+1}%")
-            
-            # Leer el PDF y contar páginas
-            doc = fitz.open(stream=pdf_file.read(), filetype="pdf")
-            num_paginas = len(doc)
-            doc.close()
-            
-            # Guardar resultado en session_state
-            st.session_state.resultados[key] = num_paginas
-            
-            # Limpiar barra de progreso y mostrar resultado
-            progress_bar.empty()
-            status_text.empty()
-            return num_paginas
-            
-        except Exception as e:
-            st.error(f"Error al procesar el documento: {str(e)}")
-            return None
-    return None
-
-# Crear columnas para organizar la interfaz
-col1, col2 = st.columns(2)
-
-with col1:
-    # Documento de Elevación
-    st.subheader("1. Documento de Elevación")
-    doc_elevacion = st.file_uploader("Subir Documento de Elevación", type="pdf", key="elevacion")
-    if st.button("Validar Documento de Elevación"):
-        resultado = contar_paginas(doc_elevacion, "elevacion")
-    if "elevacion" in st.session_state.resultados:
-        st.write(f"Número de páginas: {st.session_state.resultados['elevacion']}")
-
-    # Recurso de Apelación
-    st.subheader("2. Recurso de Apelación")
-    recurso_apelacion = st.file_uploader("Subir Recurso de Apelación", type="pdf", key="apelacion")
-    if st.button("Validar Recurso de Apelación"):
-        resultado = contar_paginas(recurso_apelacion, "apelacion")
-    if "apelacion" in st.session_state.resultados:
-        st.write(f"Número de páginas: {st.session_state.resultados['apelacion']}")
-
-    # Acto Impugnado
-    st.subheader("3. Acto Impugnado")
-    acto_impugnado = st.file_uploader("Subir Acto Impugnado", type="pdf", key="impugnado")
-    if st.button("Validar Acto Impugnado"):
-        resultado = contar_paginas(acto_impugnado, "impugnado")
-    if "impugnado" in st.session_state.resultados:
-        st.write(f"Número de páginas: {st.session_state.resultados['impugnado']}")
-
-with col2:
-    # Cargo de Notificación
-    st.subheader("4. Cargo de Notificación")
-    cargo_notificacion = st.file_uploader("Subir Cargo de Notificación", type="pdf", key="notificacion")
-    if st.button("Validar Cargo de Notificación"):
-        resultado = contar_paginas(cargo_notificacion, "notificacion")
-    if "notificacion" in st.session_state.resultados:
-        st.write(f"Número de páginas: {st.session_state.resultados['notificacion']}")
-
-    # Formato N°1
-    st.subheader("5. Formato N°1 del Administrado")
-    formato_1 = st.file_uploader("Subir Formato N°1", type="pdf", key="formato")
-    if st.button("Validar Formato N°1"):
-        resultado = contar_paginas(formato_1, "formato")
-    if "formato" in st.session_state.resultados:
-        st.write(f"Número de páginas: {st.session_state.resultados['formato']}")
-
-    # Documentos Emitidos
-    st.subheader("6. Documentos Emitidos por la Entidad")
-    docs_entidad = st.file_uploader("Subir Documentos Emitidos", type="pdf", key="entidad")
-    if st.button("Validar Documentos Emitidos"):
-        resultado = contar_paginas(docs_entidad, "entidad")
-    if "entidad" in st.session_state.resultados:
-        st.write(f"Número de páginas: {st.session_state.resultados['entidad']}")
-
-# Botón para analizar documentos al final de la página
-st.markdown("---")
-if st.button("Analizar Documentos"):
-    st.subheader("Resultado del Análisis")
-    
-    # Verificar si los documentos necesarios están cargados
-    if "apelacion" in st.session_state.resultados and "entidad" in st.session_state.resultados:
-        st.write(f"Recurso de Apelación: {st.session_state.resultados['apelacion']} páginas")
-        st.write(f"Documentos Emitidos por la Entidad: {st.session_state.resultados['entidad']} páginas")
-    else:
-        st.warning("Por favor, valide primero el Recurso de Apelación y los Documentos Emitidos por la Entidad")"""
+       st.warning("Función no implementada...")
