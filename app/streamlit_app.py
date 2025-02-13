@@ -39,6 +39,38 @@ if 'resultados' not in st.session_state:
         'doc6': None
     }
 
+st.markdown("""
+    <style>
+    .stButton > button {
+        transition: all 0.3s ease;
+    }
+    
+    .stButton > button:hover,
+    .stButton > button:active,
+    .stButton > button:focus {
+        color: white !important;
+        background-color: #0066cc !important;
+        border-color: #0066cc !important;
+        transform: scale(1.02);
+        box-shadow: none !important;
+        outline: none !important;
+    }
+
+    /* Eliminar el outline que aparece al hacer click */
+    .stButton > button:focus:not(:focus-visible) {
+        box-shadow: none !important;
+        outline: none !important;
+    }
+
+    /* Asegurar que no cambie a rojo */
+    .stButton > button:active {
+        color: white !important;
+        background-color: #0066cc !important;
+        border-color: #0066cc !important;
+    }
+    </style>
+""", unsafe_allow_html=True)
+
 # Documento 1: Documento de Elevación
 st.subheader("1. Documento de Elevación")
 doc1 = st.file_uploader("Subir Documento de Elevación", type=['pdf'], key="doc1")
@@ -49,7 +81,7 @@ if st.button("Validar Documento de Elevación"):
         for j in range(len(pdf_elevation)):
             pdf_elevation_images.append(aux_functions.take_screenshot_by_page(pdf_elevation,j))
         with st.spinner('Procesando documento...'):
-            st.session_state.resultados['doc1'] = aux_functions.document_analyzer(bedrock_client,prompt_identify = prompts.prompt_elevation_identify,pdf_images=pdf_elevation_images)
+            st.session_state.resultados['doc1'] = aux_functions.document_analyzer(bedrock_client,prompt_identify = prompts.prompt_elevation_identify, prompt_end_identify=prompts.prompt_elevation_end_identify,pdf_images=pdf_elevation_images)
     else:
         st.warning("Por favor, suba un documento primero")
 if st.session_state.resultados['doc1']:

@@ -1,6 +1,51 @@
 #-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # 1. Documento de Elevación
-prompt_elevation_identify = """Analiza el DOCUMENTO DE ELEVACIÓN siguiendo estos pasos específicos.
+prompt_elevation_identify = """Analizar las imágenes para identificar si representan un DOCUMENTO DE ELEVACIÓN.
+
+            Todo recurso de apelación debe ser remitido al Tribunal a través de un DOCUMENTO DE ELEVACIÓN para iniciar la calificación del mismo
+
+            Explica tus pensamientos dentro de <Thinking></Thinking> y dame tu respuesta final dentro de <Answer></Answer>, esta tiene que ser simplemente "true" o "false".
+
+            <Thinking>
+                1.Numeración del documento:
+                - ¿Tiene número de identificación?
+                - ¿Incluye el año en curso?
+                - ¿El formato de numeración es correcto?
+                - Observación del hallazgo
+
+                2.Fecha de emisión:
+                - ¿Está presente la fecha?
+                - ¿Está claramente legible?
+                - Observación del hallazgo
+
+                3.Asunto o sumilla:
+                - ¿Contiene un asunto o sumilla?
+                - ¿Menciona específicamente que se trata de elevación de recurso de apelación?
+                - ¿Es claro y preciso?
+                - Observación del hallazgo
+
+                4.Descripción del caso:
+                - ¿Incluye una descripción del caso?
+                - ¿Menciona el nombre completo del administrado?
+                - ¿La descripción es clara y suficiente?
+                - ¿Proporciona contexto adecuado del caso?
+                - Observación del hallazgo
+
+                5.Firma de la autoridad:
+                - ¿Está firmado el documento?
+                - ¿Se identifica claramente a la autoridad firmante?
+                - ¿La autoridad firmante tiene la competencia para elevar el recurso?
+                - ¿La firma es legible y completa?
+                - Observación del hallazgo
+            </Thinking>
+            
+            <Answer>
+                <Document>true/false</Document>
+                <Start_Page> número de página procesada por ti, donde comenzó el DOCUMENTO DE ELEVACIÓN </Start_Page>
+            </Answer>"""
+
+
+prompt_elevation_end_identify = """Analiza el DOCUMENTO DE ELEVACIÓN siguiendo estos pasos específicos.
 
     Explica tus pensamientos dentro de <Thinking></Thinking> y dame tu respuesta final dentro de <Final_Conclusion></Final_Conclusion>
 
@@ -43,7 +88,6 @@ prompt_elevation_identify = """Analiza el DOCUMENTO DE ELEVACIÓN siguiendo esto
         - Listado de elementos faltantes o incorrectos (si los hay)
     </Final_Conclusion>    
     """
-
 #-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # 2. Appeal
 prompt_appeal_identify = """Analyze the images to identify if they represent an APPEAL.
