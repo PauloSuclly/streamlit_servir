@@ -313,7 +313,7 @@ Explica tus pensamientos dentro de <Thinking></Thinking> y dame tu respuesta fin
         - Observación del hallazgo
 
         ●Correo electrónico:
-        - ¿Está presente?
+        - ¿Está presente? No importa en qué sección del documento se encuentre.
         - ¿Tiene formato válido (incluye @ y dominio)?
         - Observación del hallazgo
 
@@ -332,7 +332,6 @@ Explica tus pensamientos dentro de <Thinking></Thinking> y dame tu respuesta fin
 <Final_Conclusion>
     - Resumen de hallazgos
     - ¿El formato cumple con todos los requisitos?
-    - Listado de elementos faltantes o incorrectos (si los hay)
 <Final_Conclusion>
 """ 
 

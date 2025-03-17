@@ -138,9 +138,9 @@ st.subheader("6. Documentos Emitidos por la Entidad")
 doc6 = st.file_uploader("Subir Documentos Emitidos por la Entidad", type=['pdf'], key="doc6")
 if st.button("Validar Documentos Emitidos"):
     if doc6 is not None:
-        st.warning("Función no implementada...")
+        st.warning("Documento Emitido por la Entidad subido con éxito!")
     else:
-        st.warning("Función no implementada...")
+        st.warning("Por favor, suba el Documento Emitido por la Entidad")
 
 # Botón para analizar documentos
 st.subheader("----------------------------------------------------------------------------")
