@@ -1,5 +1,5 @@
 #-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-# 1. Documento de Elevación
+# 1. Elevation Document
 prompt_elevation_identify = """Analizar las imágenes para identificar si representan un DOCUMENTO DE ELEVACIÓN.
 
             Todo recurso de apelación debe ser remitido al Tribunal a través de un DOCUMENTO DE ELEVACIÓN para iniciar la calificación del mismo
@@ -123,8 +123,10 @@ prompt_appeal_analyze = """Analyze the APPEAL document provided using the follow
                 -Route sheet
                 -Single procedure format
                 -Handwritten date
-            - If it's a seal, is it completely clear, visible and sharp?
-            - If the seal is not clear, visible and sharp, keep the next format where a date is present.
+            - If it's a seal:
+                -Is more than one seal present? If it's the case, consider the seal with the lowest date
+                -Is it completely clear, visible and sharp?
+                -If the seal is not clear, visible and sharp, keep the next format where a date is present.
 
             2. Identification of the administrator:
             - Are full names and surnames present?
@@ -290,36 +292,41 @@ Explica tus pensamientos dentro de <Thinking></Thinking> y dame tu respuesta fin
 
 #-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # 5. Format N°1 of the Administered
-prompt_format1_identify= """Analiza el Formato N° 1 DEL ADMINISTRADO siguiendo estos pasos específicos. Para cada elemento, indica si cumple o no cumple, explicando tu razonamiento y observaciones:
+prompt_format1_identify= """Analiza el Formato N° 1 siguiendo estos pasos específicos. Para cada elemento, indica si cumple o no cumple, explicando tu razonamiento y observaciones:
 
 Explica tus pensamientos dentro de <Thinking></Thinking> y dame tu respuesta final dentro de <Final_Conclusion></Final_Conclusion>.
 
 <Thinking>
-    1.Nombres y apellidos:
-    - ¿Están presentes tanto nombres como apellidos?
-    - ¿Están escritos de forma completa?
-    - Observación del hallazgo
+    1. Administrado:
+    - El Formato pertenece al Administrado?
+    <Condition> 
+    Solo sí el Formato N°1 pertenece al Administrado y no al Jefe de Recursos humanos o a cualquier otro funcionario:
+        ●Nombres y apellidos:
+        - ¿Están presentes tanto nombres como apellidos?
+        - ¿Están escritos de forma completa?
+        - Observación del hallazgo
 
-    2.Documento de identidad:
-    - Si es DNI: ¿Tiene exactamente 8 dígitos?
-    - Si es CE: ¿Tiene exactamente 9 dígitos?
-    - ¿Son todos números?
-    - Observación del hallazgo
+        ●Documento de identidad:
+        - Si es DNI: ¿Tiene exactamente 8 dígitos?
+        - Si es CE: ¿Tiene exactamente 9 dígitos?
+        - ¿Son todos números?
+        - Observación del hallazgo
 
-    3.Correo electrónico:
-    - ¿Está presente?
-    - ¿Tiene formato válido (incluye @ y dominio)?
-    - Observación del hallazgo
+        ●Correo electrónico:
+        - ¿Está presente?
+        - ¿Tiene formato válido (incluye @ y dominio)?
+        - Observación del hallazgo
 
-    4.Número de celular:
-    - ¿Tiene exactamente 9 dígitos?
-    - ¿Son todos números?
-    - Observación del hallazgo
+        ●Número de celular:
+        - ¿Tiene exactamente 9 dígitos?
+        - ¿Son todos números?
+        - Observación del hallazgo
 
-    5.Firma del administrado:
-    - ¿Está presente la firma?
-    - ¿Qué tipo de firma es (sello/manuscrita/digital)?
-    - Observación del hallazgo
+        ●Firma del administrado:
+        - ¿Está presente la firma?
+        - ¿Qué tipo de firma es (sello/manuscrita/digital)?
+        - Observación del hallazgo
+    </Condition>
 <Thinking>
 
 <Final_Conclusion>
@@ -328,3 +335,134 @@ Explica tus pensamientos dentro de <Thinking></Thinking> y dame tu respuesta fin
     - Listado de elementos faltantes o incorrectos (si los hay)
 <Final_Conclusion>
 """ 
+
+
+#-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# GROUND OF INADMISSIBILITY
+# 1. Elevation Document
+prompt_elevation_inadmissibility = """Analiza el DOCUMENTO DE ELEVACIÓN siguiendo estos pasos específicos.
+
+    Explica tus pensamientos dentro de <Thinking></Thinking> y dame tu respuesta final dentro de <Final_Conclusion></Final_Conclusion>
+
+    <Thinking>
+        1.Asunto o sumilla:
+        - ¿Contiene un asunto o sumilla?
+        - ¿Menciona específicamente que se trata de elevación de recurso de apelación?
+        - ¿Es claro y preciso?
+        - Observación del hallazgo
+
+        2.Descripción del caso:
+        - ¿Incluye una descripción del acto que le afecta?
+        - ¿Menciona el nombre completo del administrado?
+        - ¿La descripción es clara y suficiente?
+        - ¿Proporciona contexto adecuado del caso? Como la acción que llevó a elevar el caso
+    </Thinking>
+
+    <Final_Conclusion>
+        - Cual es la acción que llevó a elevar el caso?
+    </Final_Conclusion>    
+    """
+
+# 2. Appeal
+prompt_appeal_extemporaneous_identify = """Analyze the APPEAL document provided using the following questions, explain your thoughts inside <Thinking></Thinking>:
+
+        <Thinking>
+            1.Date of presentation:
+            - Is the date of APPEAL receipt present? (Usually present on the first page of the APPEAL document)
+            - How is it accredited? Check if it is by:
+                -Seal of parties table/documentary processing unit
+                -Route sheet
+                -Single procedure format
+                -Handwritten date
+            - If it's a seal:
+                -Is more than one seal present? If it's the case, consider the seal with the lowest date
+                -Is it completely clear, visible and sharp?
+                -If the seal is not clear, visible and sharp, keep the next format where a date is present.
+        </Thinking>
+
+        Give me your final answer inside <Final_Conclusion></Final_Conclusion>, which must follow the following format"
+
+        <Final_Conclusion> Date of presentation with format YYYY-MM-DD, just answer the date. </Final_Conclusion>
+        """
+
+
+# 4. Notification Fee of the Challenged Act
+prompt_notification_inadmissibility_identify = """Analiza el CARGO DE NOTIFICACIÓN DEL ACTO IMPUGNADO siguiendo estos pasos específicos. Para cada elemento, indica si cumple o no cumple, explicando tu razonamiento y observaciones:
+
+Explica tus pensamientos dentro de <Thinking></Thinking> y dame tu respuesta final dentro de <Final_Conclusion></Final_Conclusion>.
+
+<Thinking>
+    1.Tipo de documento presentado:
+    - ¿Qué tipo de documento es? (identificar entre las siguientes opciones):
+        -Acto Impugnado firmado y con fecha
+        -Cargo de notificación
+        -Constancia de notificación
+        -Cédula de notificación
+        -Aviso de notificación
+        -Aviso o respuesta por Correo Electrónico con el documento adjunto al correo
+        -Mensaje por Whatsapp
+        -Oficio
+        -Observación del hallazgo
+        -Algún otro tipo de documento que le informe al administrado por algún medio de lo que le afecta.
+
+    2.Datos del administrado:
+    - ¿Está el nombre completo del administrado? (Si es un correo electrónico, normalmente el receptor es el Administrado)
+    - ¿Se incluye la dirección del domicilio? (si es notificación personal)
+    - ¿Se incluye la dirección de correo electrónico? (solo si es notificación por correo electrónico)
+    - Observación del hallazgo
+
+    3.Información del acto administrativo:
+    - ¿Se identifica claramente el acto administrativo impugnado? Por Ejemplo: Comunicado de una decisión tomada
+    - ¿Se describe su contenido o referencia?
+    - Observación del hallazgo
+
+    4.Datos de recepción:
+    - ¿Está la fecha de recepción? La fecha puede estar junto a la firma del receptor.
+    - Si es un correo electrónico:
+        - La Fecha de recepción es del mensaje en el que se notificó al administrado y no otra fecha que aparezca por el reenvío del mismo.
+        - Si hay más de una Fecha, se tomará como fecha de recepción la fecha que forme parte del mensaje original de notificación de la mención del acto administrativo impugnado o documento administrativo.
+    - ¿Quién recibió el documento? Si solo hay una firma junto a la fecha de recepción, el administrado es el receptor.
+    - Si no es el administrado: ¿Se especifica parentesco o relación?
+    - Observación del hallazgo
+
+    5.Datos del notificador:
+    - ¿Está el nombre completo del personal notificador o de la institución notificadora?
+    - ¿Incluye identificación de la entidad?
+    - Observación del hallazgo
+
+    6.En caso de notificación bajo puerta:
+    - ¿Se incluye la diligencia de las visitas realizadas?
+    - ¿Se documentan los intentos de notificación?
+    - Observación del hallazgo
+
+    7.En caso de notificación por correo electrónico o por whatsapp:
+    - El nombre del Administrado normalmente es el nombre de la persona receptora del correo electrónico o mensaje por whatsapp.
+    - No es necesaria una firma (sello/manuscrita/digital).
+    - La fecha de recepción es la fecha de envío.     
+
+    8.Firma:
+    - ¿Está presente la firma del administrado o de la persona receptora del documento? Puede estar junto a la fecha de recepción en la parte inferior del documento. Si es un correo electrónico no necesita firma.
+    - De existir más de una firma, la firma del administrado o del receptor será la que esté junto a la fecha.
+    - ¿Qué tipo de firma es? (sello/manuscrita/digital)
+    - Observación del hallazgo
+</Thinking>
+
+<Final_Conclusion> Fecha de recepción en formato AAAA-MM-DD, solo conteste la fecha. <Final_Conclusion>
+"""
+
+# 6. Entity Document
+prompt_entity_inadmissibility_identify = """Analiza el Documento Enviado por la Entidad siguiendo estos pasos específicos:
+
+    Explica tus pensamientos dentro de <Thinking></Thinking> y dame tu respuesta final dentro de <Final_Conclusion></Final_Conclusion>.
+
+    <Thinking>
+        1.Asunto o sumilla:
+        - De qué temas en concreto aborda el documento?
+        - Son varios documentos presentados?
+        - Hay algún tema principal que sobresalga del resto?
+    </Thinking>
+
+    <Final_Conclusion>
+        - De qué cosas en concreto trata el documento?
+    </Final_Conclusion>
+    """

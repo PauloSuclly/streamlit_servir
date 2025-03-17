@@ -163,6 +163,7 @@ cython_debug/
 
 test.py
 test.ipynb
+test2.ipynb
 
 Expedientes divididos por requisitos/
 Expedientes unificados/
