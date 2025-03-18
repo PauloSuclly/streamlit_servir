@@ -86,7 +86,7 @@ st.subheader("2. Recurso de Apelación")
 doc2 = st.file_uploader("Subir Recurso de Apelación", type=['pdf'], key="doc2")
 if st.button("Validar Recurso de Apelación"):
     if doc2 is not None:
-        pdf_appeal_images = aux_functions.get_pages(doc2)
+        pdf_appeal_images = aux_functions.get_pages(doc2, factor_escala=2.0)
         with st.spinner('Procesando documento...'):
             st.session_state.resultados['doc2'] = aux_functions.document_analyzer(bedrock_client,prompt_identify = prompts.prompt_appeal_identify, prompt_end_identify = prompts.prompt_appeal_end_identify, prompt_analyze = prompts.prompt_appeal_analyze, pdf_images=pdf_appeal_images, batch_size = 5)
     else:
@@ -136,7 +136,7 @@ if st.session_state.resultados['doc5']:
 # Documento 6: Documentos Emitidos
 st.subheader("6. Documentos Emitidos por la Entidad")
 doc6 = st.file_uploader("Subir Documentos Emitidos por la Entidad", type=['pdf'], key="doc6")
-if st.button("Validar Documentos Emitidos"):
+if st.button("Validar Documentos Emitidos por la Entidad"):
     if doc6 is not None:
         st.warning("Documento Emitido por la Entidad subido con éxito!")
     else:

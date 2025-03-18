@@ -241,8 +241,8 @@ Explica tus pensamientos dentro de <Thinking></Thinking> y dame tu respuesta fin
         -Aviso o respuesta por Correo Electrónico con el documento adjunto al correo
         -Mensaje por Whatsapp
         -Oficio
-        -Observación del hallazgo
         -Algún otro tipo de documento que le informe al administrado por algún medio de lo que le afecta.
+        -Observación del hallazgo
 
     2.Datos del administrado:
     - ¿Está el nombre completo del administrado? (Si es un correo electrónico, normalmente el receptor es el Administrado)

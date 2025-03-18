@@ -10,18 +10,19 @@ from concurrent.futures import ThreadPoolExecutor, wait
 from datetime import datetime
 from io import BytesIO
 
-def take_screenshot_by_page(document, page):
+def take_screenshot_by_page(document, page, factor_escala):
     page = document[page]
-    image = page.get_pixmap()
+    matriz_escala = fitz.Matrix(factor_escala, factor_escala)
+    image = page.get_pixmap(matrix=matriz_escala)
     image = image.tobytes()
     
     return base64.b64encode(image).decode('utf-8')
 
-def get_pages(doc) -> list:
+def get_pages(doc, factor_escala = 1.0) -> list:
     pdf_images = []
     pdf = fitz.open(stream=doc.read(), filetype="pdf")
     for j in range(len(pdf)):
-        pdf_images.append(take_screenshot_by_page(pdf,j))
+        pdf_images.append(take_screenshot_by_page(pdf,j, factor_escala))
 
     return pdf_images
 
@@ -203,8 +204,9 @@ def mootness_analyzer(bedrock_client, elevation_doc, entity_doc):
             Explica tus pensamientos dentro de <Thinking></Thinking> y dame tu respuesta final dentro de <Final_Conclusion></Final_Conclusion>.
 
             <Thinking>
-                - La pretensión se llega a producir ?
-                - Existe una circunstancia que hace innecesario el cumplimiento de la pretensión?
+                - La pretensión se llega a producir? 
+                - Existe una circunstancia que hace innecesario el cumplimiento de la pretensión? Por ejemplo: El Administrado reclamando algo sobre su trabajo, pero en medio de la disputa legal renuncia a su trabajo.
+                - Cualquier circunstancia que hace innecesario el cumplimiento de la pretensión, que no sea un caso de avocamiento indebido.
             </Thinking>
 
             <Final_Conclusion>
