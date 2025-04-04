@@ -26,7 +26,10 @@ def get_pages(doc, factor_escala = 1.0) -> list:
 
     return pdf_images
 
-def upload_to_s3(s3_client, file, bucket, folder):
+#########################################################################################################################################################################################
+# upload_to_s3 -> FUNCIÓN QUE NO SE USA ACTUALMENTE, PERO SI IMPLEMENTAN LO DEL SDK O SAM, SÍ SE NECESITARÁ YA QUE SE TENDRÁ QUE SUBIR AL S3 PRIMERO POR EL PESO DE LOS PDFS (Más de 6MB)
+#########################################################################################################################################################################################
+def upload_to_s3(s3_client, file, bucket, folder): 
     # Crear un nombre único para el archivo
     timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
     unique_id = str(uuid.uuid4())[:8]
@@ -79,11 +82,7 @@ def join_documents(documents_list):
     
     return joined_pdf
 
-def process_images_batch(bedrock_client, case_prompt, pdf_images: List[str] = None) -> str:
-
-    system_prompt = f"You are an expert lawyer and specialist in legal document analysis, who will be in charge of analyzing, validating, classifying and comparing legal documents to find possible grounds for inadmissibility."
-    
-
+def process_images_batch(bedrock_client, system_prompt, case_prompt, pdf_images: List[str] = None) -> str:
     # Prepare the message for Claude
     messages = [
         {
@@ -130,7 +129,6 @@ def process_images_batch(bedrock_client, case_prompt, pdf_images: List[str] = No
     except Exception as e:
         print(f"Error processing batch: {e}")
         return None
-#bedrock_client, case_prompt, task: str = "Identify", pdf_images: List[str] = None
 
 def document_analyzer(bedrock_client, prompt_identify: str, task: str = "analyze", prompt_end_identify: str = None, prompt_analyze: str = None, pdf_images: list[str] = None, batch_size: int = 10) -> str:
     """
@@ -138,11 +136,25 @@ def document_analyzer(bedrock_client, prompt_identify: str, task: str = "analyze
     """
     raw_result = ""
     final_result = ""
+
+    if task == "inadmissibility":
+        system_prompt = f"""You are an expert lawyer and specialist in legal document analysis, who will be in charge of analyzing, validating, classifying and comparing legal documents to find possible grounds for inadmissibility.
+        - You MUST strictly maintain the response structure:
+        <Final_Conclusion>
+            <Summary></Summary>
+            <Find_Inadmissibility_Ground></Find_Inadmissibility_Ground>
+            <Inadmissibility_Ground></Inadmissibility_Ground>
+        </Final_Conclusion>
+        You MUST give me your answer in Spanish or you will be penalized."""
+    else:
+        system_prompt = f"""You are an expert lawyer and specialist in legal document analysis, who will be in charge of analyzing, validating, classifying and comparing legal documents to find possible grounds for inadmissibility.
+        You MUST give me your answer in Spanish or you will be penalized."""
+
     if pdf_images is not None:
         for i in range(0, len(pdf_images), batch_size):
             current_batch = i // batch_size
             batch = pdf_images[i:i + batch_size]
-            raw_result = process_images_batch(bedrock_client, case_prompt = prompt_identify, pdf_images = batch)
+            raw_result = process_images_batch(bedrock_client, system_prompt = system_prompt, case_prompt = prompt_identify, pdf_images = batch)
 
             print(f"batch number: {current_batch}")
             
